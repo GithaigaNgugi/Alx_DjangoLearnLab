@@ -24,31 +24,13 @@ class LibraryDetailView(DetailView):
     context_object_name = 'library'  # Name to reference the object in the template
 
 # User registration view
-def custom_logout(request):
-    logout(request)  # Logs out the user
-    return render(request, 'relationship_app/logout.html')  # Renders custom template
-
-# Custom login view to render login.html
-def custom_login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('home')  # Redirect to the desired page after login
-        else:
-            return render(request, 'relationship_app/login.html', {'error': 'Invalid credentials'})
-    return render(request, 'relationship_app/login.html')  # Render the login form
-
-# Registration view to render register.html and handle user registration
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # Log in the user right after registration
-            return redirect('home')  # Redirect to a desired page after registration
+            login(request, user)  # Log in the user after registration
+            return redirect('home')  # Redirect to the home page after registration
     else:
         form = UserCreationForm()
     return render(request, 'relationship_app/register.html', {'form': form})
