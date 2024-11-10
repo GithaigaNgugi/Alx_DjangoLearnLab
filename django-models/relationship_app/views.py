@@ -5,7 +5,7 @@ from django.views.generic.detail import DetailView
 from .models import Book
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-
+from django.contrib.auth import login
 # Function-based view to list all books and their authors
 def list_books(request):
     # Retrieve all books from the database
