@@ -11,7 +11,7 @@ def book_list(request):
     books = Book.objects.all()
 
     # Pass the books to the template for rendering
-    return render(request, 'relationship_app/book_list.html', {'books': books})
+    return render(request, 'relationship_app/list_books.html', {'books': books})
 
 
 # Class-based view to display details of a specific library and its books
