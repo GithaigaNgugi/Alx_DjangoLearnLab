@@ -7,7 +7,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import user_passes_test
 from .models import UserProfile
-
+from django.contrib.auth.decorators import permission_required
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse
+from .models import Book
 # Function-based view to list all books and their authors
 def list_books(request):
     # Retrieve all books from the database
@@ -60,3 +63,33 @@ def is_member(user):
 @user_passes_test(is_member)
 def member_view(request):
     return HttpResponse("Welcome to the Member dashboard!")
+
+
+
+@permission_required('relationship_app.can_add_book', raise_exception=True)
+def add_book(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        author_id = request.POST.get('author_id')
+        if title and author_id:
+            Book.objects.create(title=title, author_id=author_id)
+            return redirect('book_list')
+    return render(request, 'relationship_app/add_book.html')
+
+@permission_required('relationship_app.can_change_book', raise_exception=True)
+def edit_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.method == 'POST':
+        book.title = request.POST.get('title', book.title)
+        book.author_id = request.POST.get('author_id', book.author_id)
+        book.save()
+        return redirect('book_list')
+    return render(request, 'relationship_app/edit_book.html', {'book': book})
+
+@permission_required('relationship_app.can_delete_book', raise_exception=True)
+def delete_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.method == 'POST':
+        book.delete()
+        return redirect('book_list')
+    return render(request, 'relationship_app/delete_book.html', {'book': book})
