@@ -38,22 +38,25 @@ def is_admin(user):
     return user.userprofile.role == 'Admin'
 
 # Admin view, accessible only to Admin users
+
+from django.contrib.auth.decorators import user_passes_test
+from django.http import HttpResponse
+
+def is_admin(user):
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
+
 @user_passes_test(is_admin)
 def admin_view(request):
-    return render(request, 'relationship_app/admin_view.html')
-# Function to check if user is a Librarian
+    return HttpResponse("Welcome to the Admin dashboard!")
 def is_librarian(user):
-    return user.userprofile.role == 'Librarian'
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Librarian'
 
-# Librarian view, accessible only to Librarian users
 @user_passes_test(is_librarian)
 def librarian_view(request):
-    return render(request, 'relationship_app/librarian_view.html')
-# Function to check if user is a Member
+    return HttpResponse("Welcome to the Librarian dashboard!")
 def is_member(user):
-    return user.userprofile.role == 'Member'
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
 
-# Member view, accessible only to Member users
 @user_passes_test(is_member)
 def member_view(request):
-    return render(request, 'relationship_app/member_view.html')
+    return HttpResponse("Welcome to the Member dashboard!")
