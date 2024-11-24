@@ -12,6 +12,17 @@ class Book(models.Model):
 
     def __str__(self):
         return f"{self.title} by {self.author} ({self.publication_year})"
+    class Meta:
+        permissions = [
+            ("can_view", "Can view book"),
+            ("can_create", "Can create book"),
+            ("can_edit", "Can edit book"),
+            ("can_delete", "Can delete book"),
+        ]
+
+    def __str__(self):
+        return self.title
+
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, email, date_of_birth, password=None, **extra_fields):
@@ -21,7 +32,12 @@ class CustomUserManager(BaseUserManager):
             raise ValueError('The Date of Birth field must be set')
 
         email = self.normalize_email(email)
-        user = self.model(username=username, email=email, date_of_birth=date_of_birth, **extra_fields)
+        user = self.model(
+            username=username, 
+            email=email, 
+            date_of_birth=date_of_birth, 
+            **extra_fields
+        )
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -41,7 +57,11 @@ class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     date_of_birth = models.DateField()
     profile_photo = models.ImageField(upload_to='profile_photos/', blank=True, null=True)
+
     objects = CustomUserManager()
+
+    USERNAME_FIELD = 'email'  # Login will use email instead of username
+    REQUIRED_FIELDS = ['username', 'date_of_birth']  # Additional required fields
 
     def __str__(self):
         return self.username
