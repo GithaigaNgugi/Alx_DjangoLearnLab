@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-i(nna)3ndmg467gp^s55v3st3z8jjl1n9zp)#41(w9mrtsrvx^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'LibraryProject.urls'
@@ -132,3 +133,20 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com']  # Update with your domain
+
+# Browser security settings
+SECURE_BROWSER_XSS_FILTER = True  # Protects against XSS attacks
+X_FRAME_OPTIONS = 'DENY'  # Prevents clickjacking
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevents MIME-sniffing attacks
+
+# Cookie security
+CSRF_COOKIE_SECURE = True  # Ensures CSRF cookie is sent over HTTPS
+SESSION_COOKIE_SECURE = True  # Ensures session cookie is sent over HTTPS
+CSRF_TRUSTED_ORIGINS = ['https://yourdomain.com']  # Add your domain
+
+# Content Security Policy (optional, requires middleware setup)
+CSP_DEFAULT_SRC = ("'self'",)  # Limit content sources to your domain
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", 'https://trustedscriptsource.com')  # Allow trusted script sources
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")  # Allow trusted styles
+CSP_IMG_SRC = ("'self'",)

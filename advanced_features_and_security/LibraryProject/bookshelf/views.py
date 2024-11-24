@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from .models import Book
+from django import forms
 
 # Create your views here.
 @permission_required('app_name.can_view', raise_exception=True)
@@ -31,3 +32,13 @@ def book_delete(request, pk):
         book.delete()
         # Redirect to book list or success page
     return render(request, 'books/book_confirm_delete.html', {'book': book})
+
+class MyForm(forms.Form):
+    name = forms.CharField(max_length=100)
+
+def secure_form_view(request):
+    if request.method == 'POST':
+        form = MyForm(request.POST)
+        if form.is_valid():
+            # Process the valid input
+            name = form.cleaned_data['name']
