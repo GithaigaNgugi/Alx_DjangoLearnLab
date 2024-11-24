@@ -27,9 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'relationship_app.CustomUser'
-
-
+# settings.py
+AUTH_USER_MODEL = 'bookshelf.CustomUser'
 # Application definition
 
 INSTALLED_APPS = [
@@ -54,10 +53,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'LibraryProject.urls'
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
 
 TEMPLATES = [
     {
