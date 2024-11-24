@@ -1,5 +1,5 @@
-<form method="POST" action="/your-action-url/">
+<form method="POST" action="{% url 'your_view_name' %}">
     {% csrf_token %}
-    <input type="text" name="example_field" required>
+    <input type="text" name="book_title" placeholder="Book Title">
     <button type="submit">Submit</button>
 </form>
