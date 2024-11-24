@@ -7,7 +7,7 @@ from .models import Book
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import permission_required
 from .models import Book
-from .forms import BookForm
+from .forms import ExampleForm
 
 # View to list all books
 @permission_required('app_name.can_view', raise_exception=True)
@@ -26,12 +26,12 @@ def book_create(request):
     Handles book creation. Requires 'can_create' permission.
     """
     if request.method == 'POST':
-        form = BookForm(request.POST)  # Use Django forms for validation
+        form = ExampleForm(request.POST)  # Use Django forms for validation
         if form.is_valid():
             form.save()  # Save the validated data to the database
             return redirect('book_list')  # Redirect to the book list view
     else:
-        form = BookForm()
+        form = ExampleForm()
     return render(request, 'books/book_create.html', {'form': form})
 
 
@@ -43,12 +43,12 @@ def book_edit(request, pk):
     """
     book = get_object_or_404(Book, pk=pk)  # Securely fetch book or return 404
     if request.method == 'POST':
-        form = BookForm(request.POST, instance=book)  # Bind form to existing instance
+        form = ExampleForm(request.POST, instance=book)  # Bind form to existing instance
         if form.is_valid():
             form.save()  # Save changes to the book instance
             return redirect('book_list')  # Redirect to the book list view
     else:
-        form = BookForm(instance=book)
+        form = ExampleForm(instance=book)
     return render(request, 'books/book_edit.html', {'form': form, 'book': book})
 
 
