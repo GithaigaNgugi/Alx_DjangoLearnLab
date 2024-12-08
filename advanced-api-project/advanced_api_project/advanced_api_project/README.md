@@ -41,3 +41,13 @@ Example:
 
 ### Default Behavior
 - Default ordering: Books are ordered by title in ascending order.
+## Testing API Endpoints
+
+### Overview
+This project uses Django’s built-in test framework to ensure the API behaves as expected under various conditions.
+
+### How to Run Tests
+1. Ensure all dependencies are installed (`pip install -r requirements.txt`).
+2. Run the test suite:
+   ```bash
+   python manage.py test api
